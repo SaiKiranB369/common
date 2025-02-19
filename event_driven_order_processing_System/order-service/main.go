@@ -11,14 +11,14 @@ import (
 
 func main() {
 	// Database connection
-	dsn := "host=localhost user=user password=password dbname=orders port=5432 sslmode=disable"
+	dsn := "host=localhost user=user password=password dbname=orders port=5433 sslmode=disable"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)
 	}
 
 	// Kafka producer
-	producer, err := sarama.NewSyncProducer([]string{"localhost:9092"}, nil)
+	producer, err := sarama.NewSyncProducer([]string{"localhost:9093"}, nil)
 	if err != nil {
 		log.Fatal("Failed to create Kafka producer:", err)
 	}

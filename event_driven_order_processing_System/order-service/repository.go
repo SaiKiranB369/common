@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"event_driven_order_processing_system/common/"
+	"event_driven_order_processing_system/common"
 
 	"github.com/IBM/sarama"
 	"gorm.io/gorm"

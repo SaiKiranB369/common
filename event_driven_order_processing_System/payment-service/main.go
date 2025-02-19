@@ -11,7 +11,7 @@ import (
 
 func main() {
 	// Database connection
-	dsn := "host=localhost user=user password=password dbname=orders port=5432 sslmode=disable"
+	dsn := "host=localhost user=user password=password dbname=orders port=5434 sslmode=disable"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)
@@ -21,7 +21,7 @@ func main() {
 	config := sarama.NewConfig()
 	config.Consumer.Offsets.Initial = sarama.OffsetOldest
 	consumer, err := sarama.NewConsumerGroup(
-		[]string{"localhost:9092"},
+		[]string{"localhost:9094"},
 		"payment-service-group",
 		config,
 	)

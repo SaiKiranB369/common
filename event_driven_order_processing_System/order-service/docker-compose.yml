@@ -1,56 +1,37 @@
+# order-service/docker-compose.yml
 version: '3.8'
 
 services:
   postgres:
     image: postgres:13
+    restart: always
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: orders
     ports:
-      - "5432:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U user -d orders"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
-  zookeeper:
-    image: bitnami/zookeeper:3.8
-    environment:
-      ALLOW_ANONYMOUS_LOGIN: "yes"
-    ports:
-      - "2181:2181"
-    healthcheck:
-      test: ["CMD-SHELL", "echo ruok | nc localhost 2181"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      - '5433:5432'  # Changed from 5432 to 5433
 
   kafka:
-    image: bitnami/kafka:3.4
+    image: bitnami/kafka:latest
     environment:
       KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
-      ALLOW_PLAINTEXT_LISTENER: "yes"
+      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9093
     ports:
-      - "9092:9092"
+      - '9093:9092'  # Changed from 9092 to 9093
     depends_on:
-      zookeeper:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD-SHELL", "kafka-topics.sh --list --bootstrap-server localhost:9092"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - zookeeper
+
+  zookeeper:
+    image: bitnami/zookeeper:latest
+    environment:
+      ALLOW_ANONYMOUS_LOGIN: 'yes'
+    ports:
+      - '2182:2181'  # Changed from 2181 to 2182
 
   redis:
-    image: redis:alpine
+    image: redis:latest
+    restart: always
     ports:
-      - "6379:6379"
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      - '6380:6379'  # Changed from 6379 to 6380

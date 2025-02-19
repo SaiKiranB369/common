@@ -29,7 +29,7 @@ func main() {
 
 	// Create consumer group
 	consumer, err := sarama.NewConsumerGroup(
-		[]string{"localhost:9092"},
+		[]string{"localhost:9094"},
 		"notification-service",
 		config,
 	)
